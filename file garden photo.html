@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Photo Gallery</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    font-family:Arial, Helvetica, sans-serif;
+    background:#f5f5f5;
+    padding:30px 15px;
+}
+
+h1{
+    text-align:center;
+    color:#333;
+    margin-bottom:40px;
+}
+
+.photo{
+    max-width:900px;
+    margin:0 auto 30px auto;
+}
+
+.photo img{
+    width:100%;
+    max-width:700px;
+    display:block;
+    margin:auto;
+    border-radius:12px;
+    box-shadow:0 4px 12px rgba(0,0,0,.2);
+    cursor:pointer;
+    transition:.3s;
+}
+
+.photo img:hover{
+    transform:scale(1.02);
+}
+
+.number{
+    text-align:center;
+    font-size:22px;
+    font-weight:bold;
+    color:#444;
+    margin-bottom:12px;
+}
+
+.arrow{
+    text-align:center;
+    font-size:45px;
+    color:#666;
+    margin:25px 0;
+}
+
+#viewer{
+    display:none;
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.95);
+    justify-content:center;
+    align-items:center;
+    z-index:9999;
+}
+
+#viewer img{
+    max-width:95%;
+    max-height:95%;
+    border-radius:8px;
+}
+
+.close{
+    position:absolute;
+    top:20px;
+    right:30px;
+    color:white;
+    font-size:40px;
+    cursor:pointer;
+    font-weight:bold;
+}
+</style>
+</head>
+
+<body>
+
+<h1>Photo Gallery</h1>
+
+<div id="gallery"></div>
+
+<div id="viewer">
+    <span class="close">&times;</span>
+    <img id="fullImage" src="" alt="">
+</div>
+
+<script>
+
+const gallery = document.getElementById("gallery");
+
+for (let i = 1; i <= 48; i++) {
+
+    gallery.innerHTML += `
+        <div class="photo">
+            <div class="number">Photo ${i}</div>
+            <img
+                src="photos/${i}.jpeg"
+                alt="Photo ${i}"
+                loading="lazy"
+                onclick="openImage(this.src)">
+        </div>
+
+        ${i < 48 ? '<div class="arrow">⬇️</div>' : ''}
+    `;
+}
+
+const viewer = document.getElementById("viewer");
+const fullImage = document.getElementById("fullImage");
+
+function openImage(src){
+    fullImage.src = src;
+    viewer.style.display = "flex";
+}
+
+viewer.addEventListener("click", function(e){
+    if(e.target === viewer || e.target.classList.contains("close")){
+        viewer.style.display = "none";
+    }
+});
+
+document.addEventListener("keydown", function(e){
+    if(e.key === "Escape"){
+        viewer.style.display = "none";
+    }
+});
+
+</script>
+
+</body>
+</html>
